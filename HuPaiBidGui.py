@@ -8,10 +8,12 @@ class HuPaiBidGui:
         self.root = tk.Tk()
         self.root.title("拍牌助手")
         self.root.wm_attributes('-topmost',1)
-        self.root.geometry('228x260')
+        self.root.geometry('217x260')
         self.root.resizable(0, 0)  
         self.create_menu()
         self.creat_widgets()
+
+    def mainloop(self):
         self.root.mainloop()
 
     def create_menu(self):
@@ -21,25 +23,30 @@ class HuPaiBidGui:
 
     def creat_widgets(self):
         self.frame_one = tk.Frame(self.root)
-        self.time_sync_btn = ttk.Button(self.frame_one, text="模拟测试", command = self.time_sync)  
-        self.time_sync_btn.pack(side = tk.LEFT, padx=1, pady=1)
+        self.debug_start_btn = ttk.Button(self.frame_one, text="模拟", width=5, command = self.debug_start)  
+        self.debug_start_btn.pack(side = tk.LEFT, padx=1, pady=1)
+        self.release_start_btn = ttk.Button(self.frame_one, text="实战", width=5, command = self.release_start)  
+        self.release_start_btn.pack(side = tk.LEFT, padx=1, pady=1)
         self.time_drift_lbl = ttk.Label(self.frame_one, text="时间微调:")
         self.time_drift_lbl.pack(side = tk.LEFT, padx=1, pady=1)    
         self.time_drift_input = ttk.Entry(self.frame_one, width=5, justify=tk.RIGHT)
         self.time_drift_input.pack(side = tk.LEFT, padx=1, pady=1) 
-        self.time_drift_input.insert(tk.END, '-0.2')    
+        self.time_drift_input.insert(tk.END, '0')    
         self.drift_unit_lbl = ttk.Label(self.frame_one, text="秒")
         self.drift_unit_lbl.pack(side = tk.LEFT, padx=1, pady=1)           
-        self.frame_one.pack(side = tk.TOP, expand = tk.YES, fill=tk.X)
+        self.frame_one.pack(side = tk.TOP, expand = tk.YES, fill=tk.X) 
 
         self.frame_two = tk.Frame(self.root)
         self.current_time_lbl = ttk.Label(self.frame_two, text="当前时间:")
         self.current_time_lbl.pack(side = tk.LEFT, padx=1, pady=1)
-        self.current_time_display_lbl = ttk.Label(self.frame_two, text="11:29:00.00", relief="groove")
+        self.current_time_text = tk.StringVar()
+        self.current_time_display_lbl = ttk.Label(self.frame_two, text="11:29:00", relief="groove", textvariable=self.current_time_text)
         self.current_time_display_lbl.pack(side = tk.LEFT, padx=1, pady=1)
         self.current_price_lbl = ttk.Label(self.frame_two, text="当前价格:")
         self.current_price_lbl.pack(side = tk.LEFT, padx=1, pady=1)
-        self.current_price_display_lbl = ttk.Label(self.frame_two, text="86000", relief="groove")
+        self.current_price_text = tk.StringVar()
+        self.current_price_display_lbl = ttk.Label(self.frame_two, text="86000", relief="groove", textvariable=self.current_price_text)
+        self.current_price_text.set("86000")
         self.current_price_display_lbl.pack(side = tk.LEFT, padx=1, pady=1)
         self.frame_two.pack(side = tk.TOP)
 
@@ -85,8 +92,13 @@ class HuPaiBidGui:
     def screnn_coordinate_calibration(self):
         pass
 
-    def time_sync(self):
+    def debug_start(self):
+        pass
+
+    def release_start(self):
         pass
 
     def about(self):
-        tk.messagebox.showinfo('关于', 'Python版拍牌小助手\nwmpluto@gmail.com')
+        pass
+
+    
