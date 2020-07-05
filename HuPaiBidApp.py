@@ -21,7 +21,7 @@ class HuPaiBidApp(HuPaiBidGui):
     submit_button_pos = (0, 0)
     verification_code_input_pos = (0, 0)
     confirm_after_bid_button_pos = (0, 0)  
-      
+
     def __init__(self):
         HuPaiBidGui.__init__(self)
 
@@ -87,7 +87,47 @@ class HuPaiBidApp(HuPaiBidGui):
     def release_start(self):
         self.debug = False
 
+    def get_pos(self, img):
+        area = auto.locateOnScreen(img, region=(900, 300, 500, 400), confidence=0.9) 
+        try:
+            center = auto.center(area)
+        except:
+            center = 0
+
+        return center
+
     def screnn_coordinate_calibration(self):
+        print("Get rise_prise_button_pos")
+        rise_prise_button_pos = self.get_pos(RISE_PRISE_BUTTON_PNG)
+        print(rise_prise_button_pos)
+        auto.click(rise_prise_button_pos)
+        print(rise_prise_button_pos)
+        time.sleep(CAL_DELAY)
+
+        print("Get custom_price_input_pos")
+        custom_price_input_pos = self.get_pos(CUSTOM_PRICE_INPUT_PNG)
+        if custom_price_input_pos:
+            auto.click(custom_price_input_pos)
+            auto.typewrite(message='600',interval=0.2)
+            auto.moveTo(custom_price_input_pos)
+        else:
+            custom_price_input_pos = (rise_prise_button_pos[0] - 100, rise_prise_button_pos[1])
+            auto.moveTo(custom_price_input_pos)
+        print(custom_price_input_pos)
+        time.sleep(CAL_DELAY)
+
+        print("Get price_300_button_pos")
+        price_300_button_pos = self.get_pos(PRICE_300_BUTTON_PNG)
+        auto.moveTo(price_300_button_pos)
+        print(price_300_button_pos)
+        time.sleep(CAL_DELAY)
+
+        print("Get bid_button_pos")
+        bid_button_pos = self.get_pos(BID_BUTTON_PNG)
+        auto.moveTo(bid_button_pos)
+        print(bid_button_pos)
+        time.sleep(CAL_DELAY) 
+
         self.event.set()
 
     def update_log_display(self, log):
