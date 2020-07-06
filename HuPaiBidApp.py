@@ -37,6 +37,7 @@ class HuPaiBidApp(HuPaiBidGui):
         self.update_price_display_t.setDaemon(True)
         self.update_price_display_t.start()
         self.local_time = time.time()
+        self.rtc_alarm_events = []
         self.mainloop()
 
     def update_time_display(self):
@@ -47,9 +48,18 @@ class HuPaiBidApp(HuPaiBidGui):
                         float(self.time_drift_entry.get())
                 else:
                     self.current_time = time.time() + float(self.time_drift_entry.get())
-                self.current_time_text.set(time.strftime(
-                    "%H:%M:%S", time.localtime(self.current_time)))
-                time.sleep(0.01)
+                current_time_str = time.strftime(
+                    "%H:%M:%S", time.localtime(self.current_time))
+                self.current_time_text.set(current_time_str)
+
+                if not self.first_bid_is_processed and current_time_str == (f"11:29:{self.first_bid_time_entry_text.get()}"):
+                    self.first_bid_is_processed = True
+                    print(current_time_str)
+                if not self.second_bid_is_processed and current_time_str == (f"11:29:{self.second_bid_time_entry_text.get()}"):
+                    self.second_bid_is_processed = True
+                    print(current_time_str)
+
+                time.sleep(0.1)
             except:
                 pass
         print("exit")
@@ -83,7 +93,8 @@ class HuPaiBidApp(HuPaiBidGui):
     def debug_start(self):
         self.debug = True
         self.debug_start_time = time.time()
-        print(DBG_TIMESTAMP)
+        self.first_bid_is_processed = False
+        self.second_bid_is_processed = False
 
         print(self.time_drift_entry.get())
         print(self.first_bid_time_entry.get())
