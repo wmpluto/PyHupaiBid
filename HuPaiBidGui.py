@@ -86,7 +86,7 @@ class HuPaiBidGui:
         self.first_bid_time_prefix_lbl.grid(row=1, column=1, padx=1, pady=1)
         self.first_bid_time_entry_text = tk.StringVar()
         self.first_bid_time_entry = ttk.Entry(
-            self.frame_four, width=4, justify=tk.LEFT, textvariable=self.first_bid_time_entry_text)
+            self.frame_four, width=3, justify=tk.LEFT, textvariable=self.first_bid_time_entry_text)
         self.first_bid_time_entry_text.set("00")
         self.first_bid_time_entry.grid(row=1, column=2, padx=1, pady=1)
         self.first_bid_price_entry_text = tk.StringVar()
@@ -102,7 +102,7 @@ class HuPaiBidGui:
         self.second_bid_time_prefix_lbl.grid(row=2, column=1, padx=1, pady=1)
         self.second_bid_time_entry_text = tk.StringVar()
         self.second_bid_time_entry = ttk.Entry(
-            self.frame_four, width=4, justify=tk.LEFT, textvariable=self.second_bid_time_entry_text)
+            self.frame_four, width=3, justify=tk.LEFT, textvariable=self.second_bid_time_entry_text)
         self.second_bid_time_entry_text.set("00")
         self.second_bid_time_entry.grid(row=2, column=2, padx=1, pady=1)
         self.second_bid_price_entry_text = tk.StringVar()
@@ -111,6 +111,17 @@ class HuPaiBidGui:
             self.frame_four, width=5, justify=tk.RIGHT, textvariable=self.second_bid_price_entry_text)
         self.second_bid_price_entry.grid(row=2, column=3, padx=1, pady=1)
 
+        self.force_submit_time_lbl = ttk.Label(self.frame_four, text="强制提交: ")
+        self.force_submit_time_lbl.grid(row=3, column=0, padx=1, pady=1, sticky=tk.E)
+        self.second_bid_time_prefix_lbl = ttk.Label(
+            self.frame_four, text="11:29:")
+        self.second_bid_time_prefix_lbl.grid(row=3, column=1, padx=1, pady=1)
+        self.force_submit_entry_text = tk.StringVar()
+        self.force_submit_entry_text.set("00")
+        self.force_submit_entry = ttk.Entry(
+            self.frame_four, width=5, justify=tk.RIGHT, textvariable=self.force_submit_entry_text)
+        self.force_submit_entry.grid(row=3, column=2, padx=1, pady=1, columnspan=2, sticky=tk.W)
+        
         self.frame_four.pack(side=tk.TOP)
 
         self.frame_five = tk.Frame(
@@ -122,6 +133,7 @@ class HuPaiBidGui:
         self.log_display_text.pack(side=tk.TOP, expand=tk.YES, fill=tk.BOTH, padx=0, pady=1)
 
         self.frame_five.pack(side=tk.TOP)
+ 
 
     def screnn_coordinate_calibration(self):
         pass
