@@ -7,9 +7,8 @@ import tkinter.scrolledtext as tkst
 class HuPaiBidGui:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("拍牌助手")
+        self.root.title("中标")
         self.root.wm_attributes('-topmost', 1)
-        self.root.geometry('217x260')
         self.root.resizable(0, 0)
         self.create_menu()
         self.creat_widgets()
@@ -60,6 +59,7 @@ class HuPaiBidGui:
         self.current_price_display_lbl.pack(side=tk.LEFT, padx=1, pady=1)
 
         self.frame_two.pack(side=tk.TOP)
+        self.frame_two.update()
 
         self.frame_three = tk.Frame(self.root)
 
@@ -113,11 +113,13 @@ class HuPaiBidGui:
 
         self.frame_four.pack(side=tk.TOP)
 
-        self.frame_five = tk.Frame(self.root)
+        self.frame_five = tk.Frame(
+            self.root, width=self.frame_two.winfo_width(), height=90)
+        self.frame_five.pack_propagate(0)
 
         self.log_display_text = tkst.ScrolledText(
             self.frame_five, wrap=tk.WORD)
-        self.log_display_text.pack()
+        self.log_display_text.pack(side=tk.TOP, expand=tk.YES, fill=tk.BOTH, padx=0, pady=1)
 
         self.frame_five.pack(side=tk.TOP)
 
