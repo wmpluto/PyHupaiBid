@@ -28,10 +28,10 @@ class HuPaiBidApp(HuPaiBidGui):
         self.debug = False
         self.event = threading.Event()
         #_thread.start_new_thread( thread_ocr, ("price", ))
-        self.update_time_display_t = threading.Thread(
-            target=self.update_time_display, args=())
-        self.update_time_display_t.setDaemon(True)
-        self.update_time_display_t.start()
+        self.update_time_t = threading.Thread(
+            target=self.update_time, args=())
+        self.update_time_t.setDaemon(True)
+        self.update_time_t.start()
         self.update_price_display_t = threading.Thread(
             target=self.update_price_display, args=())
         self.update_price_display_t.setDaemon(True)
@@ -40,7 +40,7 @@ class HuPaiBidApp(HuPaiBidGui):
         self.rtc_alarm_events = []
         self.mainloop()
 
-    def update_time_display(self):
+    def update_time(self):
         while True:
             try:
                 if self.debug:
@@ -54,15 +54,28 @@ class HuPaiBidApp(HuPaiBidGui):
 
                 if not self.first_bid_is_processed and current_time_str == (f"11:29:{self.first_bid_time_entry_text.get()}"):
                     self.first_bid_is_processed = True
-                    print(current_time_str)
+                    self.first_bid_t = threading.Thread(target=self.first_bid_handle, args=())
+                    self.first_bid_t.setDaemon(True)
+                    self.first_bid_t.start()
+                
                 if not self.second_bid_is_processed and current_time_str == (f"11:29:{self.second_bid_time_entry_text.get()}"):
                     self.second_bid_is_processed = True
-                    print(current_time_str)
+                    self.second_bid_t = threading.Thread(target=self.second_bid_handle, args=())
+                    self.second_bid_t.setDaemon(True)
+                    self.second_bid_t.start()
 
-                time.sleep(0.1)
+                time.sleep(0.05)
             except:
                 pass
         print("exit")
+
+    def first_bid_handle(self):
+        print(time.strftime(
+                    "%H:%M:%S", time.localtime(self.current_time)))
+
+    def second_bid_handle(self):
+        print(time.strftime(
+                    "%H:%M:%S", time.localtime(self.current_time)))
 
     def update_price_display(self):
         self.event.wait()
