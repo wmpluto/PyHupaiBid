@@ -10,7 +10,7 @@ try:
     from PIL import Image
 except ImportError:
     import Image
-
+from BidPage import BidPage
 
 class HuPaiBidApp(HuPaiBidGui):
     bid_button_pos = (0, 0)
@@ -26,6 +26,7 @@ class HuPaiBidApp(HuPaiBidGui):
         HuPaiBidGui.__init__(self)
 
         self.debug = False
+        self.bidpage = BidPage()
         self.event = threading.Event()
         #_thread.start_new_thread( thread_ocr, ("price", ))
         self.update_time_t = threading.Thread(
@@ -72,10 +73,24 @@ class HuPaiBidApp(HuPaiBidGui):
     def first_bid_handle(self):
         print(time.strftime(
                     "%H:%M:%S", time.localtime(self.current_time)))
+        self.my_target_price = self.current_price + int(self.first_bid_price_entry_text.get())
+        self.bidpage.rise_price(self.my_target_price)
+        self.bidpage.before_bid()
+        self.bidpage.wait_for_finish_verify_code()
+        self.bidpage.bid()
+        self.bidpage.after_bid()
 
     def second_bid_handle(self):
         print(time.strftime(
                     "%H:%M:%S", time.localtime(self.current_time)))
+        self.my_target_price = self.current_price + int(self.first_bid_price_entry_text.get())
+        self.bidpage.rise_price(self.my_target_price)
+        self.bidpage.before_bid()        
+        self.bidpage.wait_for_finish_verify_code()
+        while True:
+            if (self.current_price + 300 >= self.my_target_price)  or (self.current_time % 60 >= float(self.force_submit_entry_text.get())):
+                self.bidpage.bid()
+        self.bidpage.after_bid()
 
     def update_price_display(self):
         self.event.wait()
@@ -97,6 +112,7 @@ class HuPaiBidApp(HuPaiBidGui):
                 new_img.save("tmp.png")
                 r = pytesseract.image_to_string(new_img)
                 print(int("".join(list(filter(str.isdigit, r)))))
+                self.current_price = int("".join(list(filter(str.isdigit, r))))
                 self.current_price_text.set(
                     int("".join(list(filter(str.isdigit, r)))))
             except:
@@ -119,48 +135,10 @@ class HuPaiBidApp(HuPaiBidGui):
     def release_start(self):
         self.debug = False
 
-    def get_pos(self, img):
-        area = auto.locateOnScreen(img, region=(
-            900, 300, 500, 400), confidence=0.9)
-        try:
-            center = auto.center(area)
-        except:
-            center = 0
-
-        return center
-
     def screnn_coordinate_calibration(self):
-        print("Get rise_prise_button_pos")
-        rise_prise_button_pos = self.get_pos(RISE_PRISE_BUTTON_PNG)
-        print(rise_prise_button_pos)
-        auto.click(rise_prise_button_pos)
-        print(rise_prise_button_pos)
-        time.sleep(CAL_DELAY)
-
-        print("Get custom_price_input_pos")
-        custom_price_input_pos = self.get_pos(CUSTOM_PRICE_INPUT_PNG)
-        if custom_price_input_pos:
-            auto.click(custom_price_input_pos)
-            auto.typewrite(message='600', interval=0.2)
-            auto.moveTo(custom_price_input_pos)
-        else:
-            custom_price_input_pos = (
-                rise_prise_button_pos[0] - 100, rise_prise_button_pos[1])
-            auto.moveTo(custom_price_input_pos)
-        print(custom_price_input_pos)
-        time.sleep(CAL_DELAY)
-
-        print("Get price_300_button_pos")
-        price_300_button_pos = self.get_pos(PRICE_300_BUTTON_PNG)
-        auto.moveTo(price_300_button_pos)
-        print(price_300_button_pos)
-        time.sleep(CAL_DELAY)
-
-        print("Get bid_button_pos")
-        bid_button_pos = self.get_pos(BID_BUTTON_PNG)
-        auto.moveTo(bid_button_pos)
-        print(bid_button_pos)
-        time.sleep(CAL_DELAY)
+        self.bidpage.wait_for_find_zero()
+        self.bidpage.set_zero()
+        self.bidpage.check_zero()
 
         self.event.set()
 
