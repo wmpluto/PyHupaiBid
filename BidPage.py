@@ -54,9 +54,8 @@ class BidPage():
     def rise_price(self, target_price):       
         # Input Target Price
         auto.click(self.custom_price_input_pos)
-        auto.press('end')
-        for _ in range(7):
-            auto.press("backspace", interval=0.01)
+        auto.hotkey('ctrl', 'a')
+        auto.press("backspace", interval=0.01)
         auto.typewrite(message=str(target_price), interval=0.01)
         time.sleep(OPERATION_DELAY)
 
@@ -74,7 +73,7 @@ class BidPage():
         auto.moveTo(self.submit_button_pos)
 
     def bid(self):
-        auto.click()
+        auto.click(self.submit_button_pos)
 
     def after_bid(self):
         time.sleep(1)
@@ -84,7 +83,6 @@ class BidPage():
             confirm_after_bid_button_area = pos
             break
         confirm_after_bid_button_pos = auto.center(confirm_after_bid_button_area)
-        print("确认")
         auto.click(confirm_after_bid_button_pos)        
 
     def before_get_price(self):
@@ -102,7 +100,6 @@ class BidPage():
         new_img.paste(price_img, (int(140/2), int(40/2)))
         new_img.save("tmp.png")
         r = pytesseract.image_to_string(new_img)
-        print(int("".join(list(filter(str.isdigit, r)))))
         return int("".join(list(filter(str.isdigit, r))))
 
 def first_bid():

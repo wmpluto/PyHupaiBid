@@ -55,27 +55,28 @@ class HuPaiBidApp(HuPaiBidGui):
                     "%H:%M:%S", time.localtime(self.current_time))
                 self.current_time_text.set(current_time_str)
 
-                if not self.first_bid_is_processed and current_time_str == (f"11:29:{self.first_bid_time_entry_text.get()}"):
-                    self.first_bid_is_processed = True
-                    self.first_bid_t = threading.Thread(target=self.first_bid_handle, args=())
-                    self.first_bid_t.setDaemon(True)
-                    self.first_bid_t.start()
+                if current_time_str == (f"11:29:{self.first_bid_time_entry_text.get()}"):
+                    if not self.first_bid_is_processed:
+                        self.first_bid_is_processed = True
+                        self.first_bid_t = threading.Thread(target=self.first_bid_handle, args=())
+                        self.first_bid_t.setDaemon(True)
+                        self.first_bid_t.start()
                 
-                if not self.second_bid_is_processed and current_time_str == (f"11:29:{self.second_bid_time_entry_text.get()}"):
-                    self.second_bid_is_processed = True
-                    self.second_bid_t = threading.Thread(target=self.second_bid_handle, args=())
-                    self.second_bid_t.setDaemon(True)
-                    self.second_bid_t.start()
+                if current_time_str == (f"11:29:{self.second_bid_time_entry_text.get()}"):
+                    if not self.second_bid_is_processed: 
+                        self.second_bid_is_processed = True
+                        self.second_bid_t = threading.Thread(target=self.second_bid_handle, args=())
+                        self.second_bid_t.setDaemon(True)
+                        self.second_bid_t.start()
 
                 time.sleep(0.05)
             except:
                 pass
-        print("exit")
 
     def first_bid_handle(self):
-        print(time.strftime(
-                    "%H:%M:%S", time.localtime(self.current_time)))
         self.my_target_price = self.current_price + int(self.first_bid_price_entry_text.get())
+        self.update_log_display(f"{time.strftime('%H:%M:%S', time.localtime(self.current_time))}: {self.my_target_price}")
+
         self.bidpage.rise_price(self.my_target_price)
         self.bidpage.before_bid()
         self.bidpage.wait_for_finish_verify_code()
@@ -83,19 +84,19 @@ class HuPaiBidApp(HuPaiBidGui):
         self.bidpage.after_bid()
 
     def second_bid_handle(self):
-        print(time.strftime(
-                    "%H:%M:%S", time.localtime(self.current_time)))
-        self.my_target_price = self.current_price + int(self.first_bid_price_entry_text.get())
+        self.my_target_price = self.current_price + int(self.second_bid_price_entry_text.get())
+        self.update_log_display(f"{time.strftime('%H:%M:%S', time.localtime(self.current_time))}: {self.my_target_price}")
+
         self.bidpage.rise_price(self.my_target_price)
         self.bidpage.before_bid()        
         self.bidpage.wait_for_finish_verify_code()
         while True:
-            if (self.current_price + 300 <= self.my_target_price)  or (self.current_time % 60 >= float(self.force_submit_entry_text.get())):
+            if (self.current_price + 300 >= self.my_target_price)  or (self.current_time % 60 >= float(self.force_submit_entry_text.get())):
                 self.bidpage.bid()
-                print(time.localtime(self.current_time))
-                print(self.current_price)
+                self.update_log_display(f"触发时间:{self.current_time % 60} \n触发价格:{self.current_price}")
                 break
-        self.bidpage.after_bid()
+
+        self.update_log_display("祝好运!")
 
     def update_price_display(self):
         self.event.wait()
@@ -105,8 +106,9 @@ class HuPaiBidApp(HuPaiBidGui):
                 price_region = self.bidpage.before_get_price()
                 self.current_price = self.bidpage.get_price(price_region)
                 self.current_price_text.set(self.current_price)
+                self.current_price_display_lbl.configure(foreground="black")
             except:
-                print("OCR Wrong!")
+                self.current_price_display_lbl.configure(foreground="red")
                 self.current_price = 0
                 self.current_price_text.set("00000")
 
@@ -116,17 +118,15 @@ class HuPaiBidApp(HuPaiBidGui):
         self.first_bid_is_processed = False
         self.second_bid_is_processed = False
 
-        print(self.time_drift_entry.get())
-        print(self.first_bid_time_entry.get())
-        print(self.first_bid_price_entry.get())
-        print(self.second_bid_time_entry.get())
-        print(self.second_bid_price_entry.get())
         self.clear_log_display()
+        self.update_log_display("竞标开始")
 
     def release_start(self):
+        self.debug_start()
         self.debug = False
 
     def screnn_coordinate_calibration(self):
+        self.update_log_display("找寻零点...")
         self.bidpage.wait_for_find_zero()
         self.bidpage.set_zero()
         self.bidpage.check_zero()
