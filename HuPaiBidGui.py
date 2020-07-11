@@ -87,7 +87,7 @@ class HuPaiBidGui:
         self.first_bid_time_entry_text = tk.StringVar()
         self.first_bid_time_entry = ttk.Entry(
             self.frame_four, width=3, justify=tk.LEFT, textvariable=self.first_bid_time_entry_text)
-        self.first_bid_time_entry_text.set("00")
+        self.first_bid_time_entry_text.set("30")
         self.first_bid_time_entry.grid(row=1, column=2, padx=1, pady=1)
         self.first_bid_price_entry_text = tk.StringVar()
         self.first_bid_price_entry_text.set("300")
@@ -103,7 +103,7 @@ class HuPaiBidGui:
         self.second_bid_time_entry_text = tk.StringVar()
         self.second_bid_time_entry = ttk.Entry(
             self.frame_four, width=3, justify=tk.LEFT, textvariable=self.second_bid_time_entry_text)
-        self.second_bid_time_entry_text.set("00")
+        self.second_bid_time_entry_text.set("48")
         self.second_bid_time_entry.grid(row=2, column=2, padx=1, pady=1)
         self.second_bid_price_entry_text = tk.StringVar()
         self.second_bid_price_entry_text.set("600")
@@ -117,7 +117,7 @@ class HuPaiBidGui:
             self.frame_four, text="11:29:")
         self.second_bid_time_prefix_lbl.grid(row=3, column=1, padx=1, pady=1)
         self.force_submit_entry_text = tk.StringVar()
-        self.force_submit_entry_text.set("00")
+        self.force_submit_entry_text.set("57")
         self.force_submit_entry = ttk.Entry(
             self.frame_four, width=5, justify=tk.RIGHT, textvariable=self.force_submit_entry_text)
         self.force_submit_entry.grid(row=3, column=2, padx=1, pady=1, columnspan=2, sticky=tk.W)
