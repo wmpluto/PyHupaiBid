@@ -34,19 +34,15 @@ class BidPage():
         self.confirm_after_bid_button_pos = (CONFIRM_AFTER_BID_BUTTON_POS_DELTA[0] + x, CONFIRM_AFTER_BID_BUTTON_POS_DELTA[1] + y)
 
     def check_zero(self):
-        auto.moveTo(self.custom_price_input_pos)
+        auto.moveTo(self.custom_add_price_input_pos)
         time.sleep(CAL_DELAY)
         auto.moveTo(self.rise_price_button_pos)
         time.sleep(CAL_DELAY)
         auto.moveTo(self.price_300_button_pos)
         time.sleep(CAL_DELAY)
+        auto.moveTo(self.custom_price_input_pos)
+        time.sleep(CAL_DELAY)        
         auto.moveTo(self.bid_button_pos)
-        time.sleep(CAL_DELAY)
-        auto.moveTo(self.ver_code_input_pos)
-        time.sleep(CAL_DELAY)
-        auto.moveTo(self.ver_code_display_pos)
-        time.sleep(CAL_DELAY)
-        auto.moveTo(self.confirm_after_bid_button_pos)
         time.sleep(CAL_DELAY)
 
     def wait_for_finish_verify_code(self):
@@ -57,8 +53,11 @@ class BidPage():
 
     def rise_price(self, target_price):       
         # Input Target Price
-        auto.doubleClick(self.custom_price_input_pos)
-        auto.typewrite(message=str(target_price), interval=0.05)
+        auto.click(self.custom_price_input_pos)
+        auto.press('end')
+        for _ in range(7):
+            auto.press("backspace", interval=0.01)
+        auto.typewrite(message=str(target_price), interval=0.01)
         time.sleep(OPERATION_DELAY)
 
         # Submit
