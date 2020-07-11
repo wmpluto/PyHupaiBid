@@ -28,6 +28,8 @@ class HuPaiBidApp(HuPaiBidGui):
         self.debug = False
         self.bidpage = BidPage()
         self.event = threading.Event()
+        self.current_price = 0
+        self.current_time = 0
         #_thread.start_new_thread( thread_ocr, ("price", ))
         self.update_time_t = threading.Thread(
             target=self.update_time, args=())
@@ -88,20 +90,24 @@ class HuPaiBidApp(HuPaiBidGui):
         self.bidpage.before_bid()        
         self.bidpage.wait_for_finish_verify_code()
         while True:
-            if (self.current_price + 300 >= self.my_target_price)  or (self.current_time % 60 >= float(self.force_submit_entry_text.get())):
+            if (self.current_price + 300 <= self.my_target_price)  or (self.current_time % 60 >= float(self.force_submit_entry_text.get())):
                 self.bidpage.bid()
+                print(time.localtime(self.current_time))
+                print(self.current_price)
+                break
         self.bidpage.after_bid()
 
     def update_price_display(self):
         self.event.wait()
-        
-        price_region = self.bidpage.before_get_price()
 
         while True:
             try:
-                self.current_price_text.set(self.bidpage.get_price(price_region))
+                price_region = self.bidpage.before_get_price()
+                self.current_price = self.bidpage.get_price(price_region)
+                self.current_price_text.set(self.current_price)
             except:
                 print("OCR Wrong!")
+                self.current_price = 0
                 self.current_price_text.set("00000")
 
     def debug_start(self):
