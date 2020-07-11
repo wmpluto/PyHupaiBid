@@ -7,8 +7,8 @@ OPERATION_DELAY = 0.2
 DBG_TIME = "2020-6-21 11:29:10"
 DBG_TIMESTAMP = int(time.mktime(time.strptime(DBG_TIME, "%Y-%m-%d %H:%M:%S")))
 
-LEFT_AREA = (500, 500, 400, 200)
-RIGHT_AREA = (900, 300, 500, 400)
+LEFT_AREA_DELTA = (0, 190, 400, 200)
+RIGHT_AREA_DELTA = (400, 100, 500, 400)
 
 BID_BUTTON_PNG = "./img/bid-button.png"
 CANCEL_BUTTON_PNG = './img/cancel-button.png'

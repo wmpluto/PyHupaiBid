@@ -94,27 +94,12 @@ class HuPaiBidApp(HuPaiBidGui):
 
     def update_price_display(self):
         self.event.wait()
-
-        RMB_AREA = auto.locateOnScreen(
-            './img/rmb.png', region=LEFT_AREA, confidence=0.9, grayscale=True)
-        PRICE_AREA = (RMB_AREA.left + RMB_AREA.width,
-                      RMB_AREA.top, 140, RMB_AREA.height)
-
-        pytesseract.pytesseract.tesseract_cmd = r'./tesseract/tesseract.exe'
+        
+        price_region = self.bidpage.before_get_price()
 
         while True:
             try:
-                price_img = auto.screenshot(region=PRICE_AREA)
-
-                new_img = Image.new(mode='RGB', size=(
-                    140*2, 40*2), color=(255, 255, 255))
-                new_img.paste(price_img, (int(140/2), int(40/2)))
-                new_img.save("tmp.png")
-                r = pytesseract.image_to_string(new_img)
-                print(int("".join(list(filter(str.isdigit, r)))))
-                self.current_price = int("".join(list(filter(str.isdigit, r))))
-                self.current_price_text.set(
-                    int("".join(list(filter(str.isdigit, r)))))
+                self.current_price_text.set(self.bidpage.get_price(price_region))
             except:
                 print("OCR Wrong!")
                 self.current_price_text.set("00000")
