@@ -45,6 +45,11 @@ class BidPage():
         auto.moveTo(self.bid_button_pos)
         time.sleep(CAL_DELAY)
 
+    def set_price_zero(self):
+        x, y = auto.position()
+        self.zero = (x, y)
+        self.price_area = (x, y, PRICE_AREA_DELTA[2], PRICE_AREA_DELTA[3])
+
     def wait_for_finish_verify_code(self):
         keyboard.wait('enter')
 
@@ -88,9 +93,9 @@ class BidPage():
     def before_get_price(self):
         pytesseract.pytesseract.tesseract_cmd = r'./tesseract/tesseract.exe'
 
-        RMB_AREA = auto.locateOnScreen(
-            './img/rmb.png', region=self.left_area, confidence=0.9, grayscale=True)
-        return (RMB_AREA.left + RMB_AREA.width, RMB_AREA.top, 140, RMB_AREA.height)
+        # RMB_AREA = auto.locateOnScreen(
+        #     './img/rmb.png', region=self.left_area, confidence=0.9, grayscale=True)
+        # return (RMB_AREA.left + RMB_AREA.width, RMB_AREA.top, 140, RMB_AREA.height)
 
     def get_price(self, price_region):
         price_img = auto.screenshot(region=price_region)
@@ -98,7 +103,7 @@ class BidPage():
         new_img = Image.new(mode='RGB', size=(
             140*2, 40*2), color=(255, 255, 255))
         new_img.paste(price_img, (int(140/2), int(40/2)))
-        new_img.save("tmp.png")
+        # new_img.save("tmp.png")
         r = pytesseract.image_to_string(new_img)
         return int("".join(list(filter(str.isdigit, r))))
 

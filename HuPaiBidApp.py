@@ -103,8 +103,8 @@ class HuPaiBidApp(HuPaiBidGui):
 
         while True:
             try:
-                price_region = self.bidpage.before_get_price()
-                self.current_price = self.bidpage.get_price(price_region)
+                self.bidpage.before_get_price()
+                self.current_price = self.bidpage.get_price(self.bidpage.price_area)
                 self.current_price_text.set(self.current_price)
                 self.current_price_display_lbl.configure(foreground="black")
             except:
@@ -126,10 +126,17 @@ class HuPaiBidApp(HuPaiBidGui):
         self.debug = False
 
     def screnn_coordinate_calibration(self):
-        self.update_log_display("找寻零点...")
+        self.update_log_display("找寻屏幕零点")
         self.bidpage.wait_for_find_zero()
         self.bidpage.set_zero()
         self.bidpage.check_zero()
+
+        # self.event.set()
+
+    def price_coordinate_calibration(self):
+        self.update_log_display("找寻价格零点")
+        self.bidpage.wait_for_find_zero()
+        self.bidpage.set_price_zero()
 
         self.event.set()
 
