@@ -93,12 +93,12 @@ class HuPaiBidApp(HuPaiBidGui):
         while True:
             if (self.current_price + 300 >= self.my_target_price)  or (self.current_time % 60 >= float(self.force_submit_entry_text.get())):
                 self.bidpage.bid()
-                self.update_log_display(f"触发时间:{self.current_time % 60} \n触发价格:{self.current_price}")
+                self.update_log_display(f"触发时间:{self.current_time % 60:.2f} \n触发价格:{self.current_price}")
                 break
 
         self.update_log_display("祝好运!")
 
-    def update_price_display(self):
+    def update_price_display (self):
         self.event.wait()
 
         while True:
