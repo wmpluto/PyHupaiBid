@@ -64,11 +64,11 @@ class HuPaiBidGui:
         self.frame_three = tk.Frame(self.root)
 
         self.screnn_coordinate_calibration_btn = ttk.Button(
-            self.frame_three, text="屏幕校准", command=self.screnn_coordinate_calibration)
+            self.frame_three, text="屏幕校准(N)", command=self.screnn_coordinate_calibration)
         self.screnn_coordinate_calibration_btn.pack(
             side=tk.LEFT, expand=tk.YES, fill=tk.X, padx=1, pady=1)
         self.price_coordinate_calibration_btn = ttk.Button(
-            self.frame_three, text="价格校准", command=self.price_coordinate_calibration)
+            self.frame_three, text="价格校准(N)", command=self.price_coordinate_calibration)
         self.price_coordinate_calibration_btn.pack(
             side=tk.LEFT, expand=tk.YES, fill=tk.X, padx=1, pady=1)
 
@@ -140,10 +140,10 @@ class HuPaiBidGui:
  
 
     def screnn_coordinate_calibration(self):
-        pass
+        self.screnn_coordinate_calibration_btn['text'] = '屏幕校准(Y)'
 
     def price_coordinate_calibration(self):
-        pass
+        self.price_coordinate_calibration_btn['text'] = '价格校准(Y)'
 
     def debug_start(self):
         pass
