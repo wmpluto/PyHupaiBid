@@ -90,6 +90,8 @@ class HuPaiBidApp(HuPaiBidGui):
         self.bidpage.rise_price(self.my_target_price)
         self.bidpage.before_bid()        
         self.bidpage.wait_for_finish_verify_code()
+
+        self.update_log_display("等待出价...")
         while True:
             if (self.current_price + 300 >= self.my_target_price)  or (self.current_time % 60 >= float(self.force_submit_entry_text.get())):
                 self.bidpage.bid()
@@ -97,6 +99,7 @@ class HuPaiBidApp(HuPaiBidGui):
                 break
 
         self.update_log_display("祝好运!")
+        self.bidpage.after_bid()
 
     def update_price_display (self):
         self.event.wait()
@@ -126,6 +129,8 @@ class HuPaiBidApp(HuPaiBidGui):
         self.debug = False
 
     def screnn_coordinate_calibration(self):
+        HuPaiBidGui.screnn_coordinate_calibration(self)
+
         self.update_log_display("找寻屏幕零点")
         self.bidpage.wait_for_find_zero()
         self.bidpage.set_zero()
@@ -134,6 +139,8 @@ class HuPaiBidApp(HuPaiBidGui):
         # self.event.set()
 
     def price_coordinate_calibration(self):
+        HuPaiBidGui.price_coordinate_calibration(self)
+
         self.update_log_display("找寻价格零点")
         self.bidpage.wait_for_find_zero()
         self.bidpage.set_price_zero()

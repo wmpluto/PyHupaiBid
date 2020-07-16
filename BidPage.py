@@ -69,6 +69,8 @@ class BidPage():
         time.sleep(OPERATION_DELAY)
 
     def before_bid(self):
+        auto.click(self.ver_code_input_pos)
+
         submit_cancel_areas = auto.locateAllOnScreen(SUBMIT_CANCEL_CONFIRM_BUTTON_PNG, region=self.right_area, confidence=0.9)
         submit_button_area = (1980, 0, 0, 0)
         for pos in submit_cancel_areas:
@@ -81,7 +83,7 @@ class BidPage():
         auto.click(self.submit_button_pos)
 
     def after_bid(self):
-        time.sleep(1)
+        keyboard.wait('enter')
         confirm_after_bid_button_area = (0, 0, 0, 0)
         submit_cancel_areas = auto.locateAllOnScreen(SUBMIT_CANCEL_CONFIRM_BUTTON_PNG, region=self.right_area, confidence=0.9)
         for pos in submit_cancel_areas:
@@ -105,7 +107,7 @@ class BidPage():
         new_img.paste(price_img, (int(140/2), int(40/2)))
         # new_img.save("tmp.png")
         r = pytesseract.image_to_string(new_img)
-        return int("".join(list(filter(str.isdigit, r))))
+        return int("".join(list(filter(str.isdigit, r.split('\n')[0]))))
 
 def first_bid():
     bidpage = BidPage()
