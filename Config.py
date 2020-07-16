@@ -9,7 +9,7 @@ DBG_TIMESTAMP = int(time.mktime(time.strptime(DBG_TIME, "%Y-%m-%d %H:%M:%S")))
 
 LEFT_AREA_DELTA = (0, 190, 400, 200)
 RIGHT_AREA_DELTA = (400, 100, 500, 400)
-PRICE_AREA_DELTA = (0, 0, 150, 40)
+PRICE_AREA_DELTA = (0, 0, 170, 35)
 
 BID_BUTTON_PNG = "./img/bid-button.png"
 CANCEL_BUTTON_PNG = './img/cancel-button.png'
