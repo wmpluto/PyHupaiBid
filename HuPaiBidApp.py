@@ -156,6 +156,3 @@ class HuPaiBidApp(HuPaiBidGui):
 
     def about(self):
         tk.messagebox.showinfo('关于', 'Python版拍牌小助手\nwmpluto@gmail.com')
-
-
-a = HuPaiBidApp()
