@@ -1,6 +1,6 @@
 import time
 
-DRIFT = - 0.2
+DRIFT = -0.2
 CAL_DELAY = 0.5
 OPERATION_DELAY = 0.2
 

@@ -116,7 +116,8 @@ class HuPaiBidGui:
         self.second_bid_price_entry.grid(row=2, column=3, padx=1, pady=1)
 
         self.force_submit_time_lbl = ttk.Label(self.frame_four, text="强制提交: ")
-        self.force_submit_time_lbl.grid(row=3, column=0, padx=1, pady=1, sticky=tk.E)
+        self.force_submit_time_lbl.grid(
+            row=3, column=0, padx=1, pady=1, sticky=tk.E)
         self.second_bid_time_prefix_lbl = ttk.Label(
             self.frame_four, text="11:29:")
         self.second_bid_time_prefix_lbl.grid(row=3, column=1, padx=1, pady=1)
@@ -124,8 +125,9 @@ class HuPaiBidGui:
         self.force_submit_entry_text.set("57")
         self.force_submit_entry = ttk.Entry(
             self.frame_four, width=5, justify=tk.RIGHT, textvariable=self.force_submit_entry_text)
-        self.force_submit_entry.grid(row=3, column=2, padx=1, pady=1, columnspan=2, sticky=tk.W)
-        
+        self.force_submit_entry.grid(
+            row=3, column=2, padx=1, pady=1, columnspan=2, sticky=tk.W)
+
         self.frame_four.pack(side=tk.TOP)
 
         self.frame_five = tk.Frame(
@@ -134,16 +136,23 @@ class HuPaiBidGui:
 
         self.log_display_text = tkst.ScrolledText(
             self.frame_five, wrap=tk.WORD)
-        self.log_display_text.pack(side=tk.TOP, expand=tk.YES, fill=tk.BOTH, padx=0, pady=1)
+        self.log_display_text.pack(
+            side=tk.TOP, expand=tk.YES, fill=tk.BOTH, padx=0, pady=1)
 
         self.frame_five.pack(side=tk.TOP)
- 
 
     def screnn_coordinate_calibration(self):
         self.screnn_coordinate_calibration_btn['text'] = '屏幕校准(Y)'
 
     def price_coordinate_calibration(self):
         self.price_coordinate_calibration_btn['text'] = '价格校准(Y)'
+
+    def update_log_display(self, log):
+        self.log_display_text.insert(tk.INSERT, log + '\n')
+        self.log_display_text.see(tk.END)
+
+    def clear_log_display(self):
+        self.log_display_text.delete(0.0, tk.END)
 
     def debug_start(self):
         pass
