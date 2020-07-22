@@ -1,7 +1,7 @@
 import time
 
 DRIFT = -0.2
-CAL_DELAY = 0.5
+CAL_DELAY = 0.2
 OPERATION_DELAY = 0.2
 
 DBG_TIME = "2020-6-21 11:29:10"
