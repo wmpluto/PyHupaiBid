@@ -58,8 +58,19 @@ class BidPage():
 
     def set_price_zero(self):
         x, y = auto.position()
-        self.zero = (x, y)
+        self.price_zero = (x, y)
         self.price_area = (x, y, PRICE_AREA_DELTA[2], PRICE_AREA_DELTA[3])
+
+    def check_price_zero(self):
+        x, y = self.price_zero
+        auto.moveTo((x, y + PRICE_AREA_DELTA[3]))
+        time.sleep(CAL_DELAY)
+        auto.moveTo((x + PRICE_AREA_DELTA[2], y + PRICE_AREA_DELTA[3]))
+        time.sleep(CAL_DELAY)
+        auto.moveTo((x + PRICE_AREA_DELTA[2], y))
+        time.sleep(CAL_DELAY)
+        auto.moveTo(self.price_zero)
+        time.sleep(CAL_DELAY)
 
     def wait_for_finish_verify_code(self):
         keyboard.wait('enter')
@@ -129,3 +140,6 @@ class BidPage():
         time.sleep(OPERATION_DELAY)
         auto.click(self.ver_code_input_pos)
         time.sleep(OPERATION_DELAY)
+
+        if self.submit_button_pos:
+            auto.moveTo(self.submit_button_pos)
