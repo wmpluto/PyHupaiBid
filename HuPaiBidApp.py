@@ -17,6 +17,8 @@ class HuPaiBidApp(HuPaiBidGui):
         self.debug = False
         self.first_bid_is_processed = False
         self.second_bid_is_processed = False
+        self.is_screnn_calibration_process = False
+        self.is_price_calibration_process = False
 
         self.bidpage = BidPage()
 
@@ -140,22 +142,37 @@ class HuPaiBidApp(HuPaiBidGui):
         self.clear_log_display()
         self.update_log_display("实战竞标开始")
 
-    def screnn_coordinate_calibration(self):
-        HuPaiBidGui.screnn_coordinate_calibration(self)
-
-        self.update_log_display("找寻屏幕零点")
+    def screnn_calibration_process(self):
         self.bidpage.wait_for_find_zero()
         self.bidpage.set_zero()
         self.bidpage.check_zero()
 
-        # self.event.set()
+        self.is_screnn_calibration_process = False
 
-    def price_coordinate_calibration(self):
-        HuPaiBidGui.price_coordinate_calibration(self)
+    def screnn_coordinate_calibration(self):
+        if not self.is_screnn_calibration_process:
+            self.is_screnn_calibration_process = True
+            HuPaiBidGui.screnn_coordinate_calibration(self)
+            self.update_log_display("找寻屏幕零点...")
 
-        self.update_log_display("找寻价格零点")
+            threading.Thread(
+                target=self.screnn_calibration_process, args=()).start()
+
+    def price_calibration_process(self):
         self.bidpage.wait_for_find_zero()
         self.bidpage.set_price_zero()
+        self.bidpage.check_price_zero()
+
+        self.is_price_calibration_process = False
+
+    def price_coordinate_calibration(self):
+        if not self.is_price_calibration_process:
+            self.is_price_calibration_process = True
+            HuPaiBidGui.price_coordinate_calibration(self)
+            self.update_log_display("找寻价格零点...")
+
+            threading.Thread(
+                target=self.price_calibration_process, args=()).start()
 
         self.event.set()
 
